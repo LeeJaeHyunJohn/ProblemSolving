@@ -1,51 +1,35 @@
-#1926(BFS)
+#1926(BFS)-조금 더 간결한 풀이
+
 from collections import deque
 
-n,m = map(int, input().split())
-graph=[]
+def bfs(x, y):
+    a[x][y] = 0
+    dx = [1, -1, 0, 0]
+    dy = [0, 0, 1, -1]
+    w = 1
+    q = deque()
+    q.append([x, y])
+    while q:
+        x, y = q.popleft()
+        for i in range(4):
+            nx = dx[i] + x
+            ny = dy[i] + y
+            if 0 <= nx < n and 0 <= ny < m and a[nx][ny] == 1:
+                q.append([nx, ny])
+                a[nx][ny] = 0
+                w += 1
+    return w
 
+
+n, m = map(int, input().split())
+a = [list(map(int, input().split())) for _ in range(n)]
+cnt = 0
+ans = 0
 for i in range(n):
-  graph.append(list(map(int, input().split())))
+    for j in range(m):
+        if a[i][j] == 1:
+            cnt += 1
+            ans = max(bfs(i, j), ans)
 
-#상,하,좌,우 정의
-dx=[-1,1,0,0]
-dy=[0,0,-1,1]
-
-width_list=[]
-
-def bfs_width(x,y):
-  width=0
-  queue=deque()
-  queue.append((x,y))
-  graph[x][y]=0
-  while queue:
-    x,y=queue.popleft()#이 부분 실수함
-    width+=1
-    
-    for i in range(4):
-      nx=x+dx[i]
-      ny=y+dy[i]
-      #도화지 벗어난 경우
-      if nx<0 or ny<0 or nx>=n or ny>=m :
-        continue 
-      if graph[nx][ny]==0:
-        continue
-      if graph[nx][ny]==1:
-        graph[nx][ny]=0#실수함
-        queue.append((nx,ny))
-        
-
-  width_list.append(width)
-    
-count=0
-for i in range(n):
-  for j in range(m):
-    if graph[i][j]==1:
-      bfs_width(i,j)
-      count+=1
-
-print(count)
-if(count==0):
-  print(0)
-else:
-  print(max(width_list))
+print(cnt)
+print(ans)

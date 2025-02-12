@@ -11,3 +11,12 @@ def solution(arr):
         i+=1
                          
     return answer
+
+#좋은 풀이
+# def solution(arr):
+#     answer = []
+#     answer.append(arr[0])
+#     for number in arr:
+#         if number is not answer[-1]:
+#             answer.append(number)
+#     return answer
